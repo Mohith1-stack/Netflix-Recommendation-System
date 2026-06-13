@@ -2,17 +2,9 @@ import os
 import joblib
 import pandas as pd
 
-# -----------------------------
-# Project Paths
-# -----------------------------
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 MODEL_DIR = os.path.join(BASE_DIR, "models")
-
-# -----------------------------
-# Load Saved Files
-# -----------------------------
 
 df = joblib.load(
     os.path.join(MODEL_DIR, "netflix_data.pkl")
@@ -21,10 +13,6 @@ df = joblib.load(
 cosine_sim = joblib.load(
     os.path.join(MODEL_DIR, "cosine_sim.pkl")
 )
-
-# -----------------------------
-# Recommendation Function
-# -----------------------------
 
 
 def recommend(title, top_n=5):
@@ -68,10 +56,6 @@ def recommend(title, top_n=5):
 
     return recommendations
 
-
-# -----------------------------
-# Test
-# -----------------------------
 
 if __name__ == "__main__":
 

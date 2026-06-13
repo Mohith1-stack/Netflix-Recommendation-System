@@ -7,20 +7,12 @@ from recommend import recommend
 app = Flask(__name__)
 CORS(app)
 
-# ----------------------------
-# TMDB API
-# ----------------------------
-
 TMDB_API_KEY = "2e072dfc4c3e6aeacaee40e2b6d9627c"
 
 DEFAULT_POSTER = (
     "https://via.placeholder.com/300x450?text=No+Poster"
 )
 
-
-# ----------------------------
-# Get Poster from TMDB
-# ----------------------------
 
 def get_movie_poster(title):
 
@@ -47,7 +39,6 @@ def get_movie_poster(title):
 
         results = data.get("results", [])
 
-        # First try exact title match
         for item in results:
 
             name = item.get("title") or item.get("name") or ""
@@ -61,7 +52,6 @@ def get_movie_poster(title):
                         + item["poster_path"]
                     )
 
-        # Otherwise return first available poster
         for item in results:
 
             if item.get("poster_path"):
@@ -77,10 +67,6 @@ def get_movie_poster(title):
 
     return "https://via.placeholder.com/300x450?text=No+Poster"
 
-# ----------------------------
-# Home
-# ----------------------------
-
 
 @app.route("/")
 def home():
@@ -89,10 +75,6 @@ def home():
         "message": "Netflix Recommendation API Running"
     })
 
-
-# ----------------------------
-# Recommendation API
-# ----------------------------
 
 @app.route("/recommend", methods=["GET"])
 def get_recommendations():
@@ -106,7 +88,6 @@ def get_recommendations():
 
     results = recommend(title)
 
-    # Add poster to every recommendation
     for movie in results:
         movie["poster"] = get_movie_poster(movie["title"])
 
@@ -115,10 +96,6 @@ def get_recommendations():
         "recommendations": results
     })
 
-
-# ----------------------------
-# Run
-# ----------------------------
 
 if __name__ == "__main__":
     app.run(debug=True)

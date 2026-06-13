@@ -5,10 +5,6 @@ import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
-# -----------------------------
-# Project Paths
-# -----------------------------
-
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DATA_PATH = os.path.join(
@@ -17,26 +13,14 @@ DATA_PATH = os.path.join(
     "netflix_clean.csv"
 )
 
-# -----------------------------
-# Load Dataset
-# -----------------------------
-
 print("Loading Dataset...")
 
 df = pd.read_csv(DATA_PATH)
-
-# -----------------------------
-# Fill Missing Values
-# -----------------------------
 
 df["director"] = df["director"].fillna("")
 df["cast"] = df["cast"].fillna("")
 df["listed_in"] = df["listed_in"].fillna("")
 df["description"] = df["description"].fillna("")
-
-# -----------------------------
-# Feature Engineering
-# -----------------------------
 
 df["combined_features"] = (
     df["listed_in"]
@@ -50,10 +34,6 @@ df["combined_features"] = (
 
 print("\nCombined Features Created Successfully\n")
 
-# -----------------------------
-# TF-IDF
-# -----------------------------
-
 print("Creating TF-IDF Matrix...")
 
 tfidf = TfidfVectorizer(stop_words="english")
@@ -65,10 +45,6 @@ tfidf_matrix = tfidf.fit_transform(
 print("TF-IDF Shape:")
 print(tfidf_matrix.shape)
 
-# -----------------------------
-# Cosine Similarity
-# -----------------------------
-
 print("\nCreating Cosine Similarity Matrix...")
 
 cosine_sim = cosine_similarity(tfidf_matrix)
@@ -76,17 +52,9 @@ cosine_sim = cosine_similarity(tfidf_matrix)
 print("Cosine Similarity Shape:")
 print(cosine_sim.shape)
 
-# -----------------------------
-# Create models folder
-# -----------------------------
-
 MODEL_DIR = os.path.join(BASE_DIR, "models")
 
 os.makedirs(MODEL_DIR, exist_ok=True)
-
-# -----------------------------
-# Save Models
-# -----------------------------
 
 joblib.dump(
     cosine_sim,
